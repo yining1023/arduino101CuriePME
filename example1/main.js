@@ -3,8 +3,8 @@ const name = 'Yining-CuriePME';
 
 var characteristiPattern;
 
-var value = '1';
-var letter = '1';
+var value = '64';
+var letter = 'waiting...';
 
 // The midi notes of a scale
 var notes = [ 60, 62, 64, 65, 67, 69, 71];
@@ -14,7 +14,7 @@ var notes = [ 60, 62, 64, 65, 67, 69, 71];
 // For automatically playing the song
 var index = 0;
 var song = [];
-var song0 = [
+var song1 = [
   { note: 0, duration: 400, display: "C" },
   { note: 0, duration: 400, display: "C" },
   { note: 4, duration: 400, display: "G" },
@@ -40,17 +40,15 @@ var song0 = [
   // { note: 1, duration: 400, display: "D" },
 ];
 
-var song1 = [
+var song2 = [
   { note: 0, duration: 400, display: "C" },
 ];
 
-var song2 = [
+var song0 = [
   { note: 0, duration: 400, display: "C" },
   { note: 1, duration: 400, display: "D" },
   { note: 2, duration: 400, display: "E" },
 ];
-
-var song2 = [];
 
 var trigger = 0;
 var autoplay = false;
@@ -101,8 +99,14 @@ function handleData(event) {
   letter = String.fromCharCode(value);
   console.log('> Converted data to letter: : ' + letter);
 
-  var songIndex = 'song' + JSON.stringify(value - 65);
-  song = songIndex;
+  if (value - 65 === 0) {
+    song = song0;
+  } else if (value - 65 === 1) {
+    song = song1;
+  } else if (value - 65 === 2) {
+    song = song2;
+  }
+
 
   if (!autoplay) {
     index = 0;
@@ -111,7 +115,7 @@ function handleData(event) {
 }
 
 function setup() {
-  createCanvas(720, 400);
+  createCanvas(920, 600);
   textSize(180);
   textAlign(CENTER);
   colorMode(HSB, 100);
@@ -122,10 +126,10 @@ function setup() {
   // button.parent("instructions");
   // Trigger automatically playing
   // button.mousePressed(function() {
-    // if (!autoplay) {
-    //   index = 0;
-    //   autoplay = true;
-    // }
+  //   if (!autoplay) {
+  //     index = 0;
+  //     autoplay = true;
+  //   }
   // });
 
   // A triangle oscillator
@@ -151,11 +155,16 @@ function playNote(note, duration) {
 
 
 // 1 2 3
-// V X O
+// V W ∞
+// var newLetters = ['waiting...', 'V', 'M', '∞'];
 function draw() {
-  var hue = map(parseInt(value), 65, 66, 0, 50);
+  if (letter === 'waiting...') {
+    background(225);
+  } else {
+    var hue = map(parseInt(value), 65, 67, 0, 70);
+    background(hue, 100, 100);
+  }
 
-  background(hue, 100, 100);
   // If we are autoplaying and it's time for the next note
   if (autoplay && millis() > trigger){
     playNote(notes[song[index].note], song[index].duration);
