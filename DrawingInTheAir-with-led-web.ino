@@ -76,7 +76,7 @@ void setup()
     blePeripheral.addAttribute(customService);
     blePeripheral.addAttribute(CharacteristicPattern);
 
-    CharacteristicPattern.setValue('1');
+    CharacteristicPattern.setValue('0');
     blePeripheral.begin();
 
     /* Start the IMU (Intertial Measurement Unit), enable the accelerometer */
