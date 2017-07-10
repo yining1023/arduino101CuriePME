@@ -36,7 +36,7 @@ const unsigned int trainingReps = 4;
 
 /* Increase this to 'A-Z' if you like-- it just takes a lot longer to train */
 const unsigned char trainingStart = 'A';
-const unsigned char trainingEnd = 'B';
+const unsigned char trainingEnd = 'C';
 
 /* The input pin used to signal when a letter is being drawn- you'll
  * need to make sure a button is attached to this pin */

@@ -4,22 +4,35 @@ const name = 'CuriePME';
 var bluetoothDevice;
 var characteristiPattern;
 
-var value = '64';
+var value;
 var letter = 'Waiting...';
-var index = 0;
+var index;
+
+var backgroundColors = ['#1DFFAD', '#0FE8E2', '#2272FF'];
+var letterColors = ['#FF5797', '#EF5565', '#FB5524'];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textSize(180);
   textAlign(CENTER);
-  colorMode(HSB, 100);
   noStroke();
-  fill(255);
 }
 
 function draw() {
-  background(10);
-  drawDotsBackground();
+  fill(0);
+  background(255);
+  if (letter !== 'Waiting...') changeColors();
   text(letter, width / 2, height / 2);
-  drawLetters(letter);
+}
+
+function changeColors() {
+  if (letter === 'A') {
+    index = 0;
+  } else if (letter === 'B') {
+    index = 1;
+  } else if (letter === 'C') {
+    index = 2;
+  }
+  background(backgroundColors[index]);
+  fill(letterColors[index]);
 }
