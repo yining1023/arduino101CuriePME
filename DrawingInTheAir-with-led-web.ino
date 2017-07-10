@@ -26,8 +26,7 @@ BLEService customService("19B10000-E8F2-537E-4F6C-D104768A1216");
 
 BLEUnsignedCharCharacteristic CharacteristicPattern("4227f3b1-d6a2-4fb2-a916-3bee580a9c84", BLERead | BLENotify);
 
-unsigned long loopTime = 0;
-unsigned long interruptsTime = 0;
+
 
 /*  This controls how many times a letter must be drawn during training.
  *  Any higher than 4, and you may not have enough neurons for all 26 letters
@@ -62,6 +61,10 @@ const unsigned int sensorBufSize = 2048;
 const int IMULow = -32768;
 const int IMUHigh = 32767;
 
+byte vector[vectorNumBytes];
+unsigned int category;
+char letter;
+
 void setup()
 {
     Serial.begin(9600);
@@ -71,7 +74,7 @@ void setup()
     pinMode(ledPin, OUTPUT);
 
     // setup ble
-    blePeripheral.setLocalName("Yining-CuriePME");
+    blePeripheral.setLocalName("CuriePME");
     blePeripheral.setAdvertisedServiceUuid(customService.uuid());
     blePeripheral.addAttribute(customService);
     blePeripheral.addAttribute(CharacteristicPattern);
@@ -95,27 +98,20 @@ void setup()
 }
 
 void loop ()
-{   
-    byte vector[vectorNumBytes];
-    unsigned int category;
-    char letter;
-
+{
     // ble
     BLECentral central = blePeripheral.central();
     if (central) {
         Serial.print("Connected to central: ");
         // print the central's MAC address:
         Serial.println(central.address());
-        Serial.println("central is true now");
         
         if (central.connected()) {
-            Serial.println("going to central.connected");
             /* Wait until button is pressed */
             while (digitalRead(buttonPin) == LOW) {
               digitalWrite(ledPin, LOW);
             }
-            readVectorFromIMULearn(vector, category, letter);
-            Serial.println("END of readValueFromIMUandClassify.....");
+            readVectorFromIMUTest(vector);
         }
     }
 }
@@ -181,9 +177,8 @@ void undersample(byte samples[], int numSamples, byte vector[])
     }
 }
 
-void readVectorFromIMULearn(byte vector[], unsigned int category, char letter)
+void readVectorFromIMUTest(byte vector[])
 {
-    Serial.println("going into readVectorfromimu LEARN");
     byte accel[sensorBufSize];
     int raw[3];
 
@@ -212,12 +207,8 @@ void readVectorFromIMULearn(byte vector[], unsigned int category, char letter)
         }
     }
 
-    Serial.println("going BEFORE undersample");
     undersample(accel, samples, vector);
-    Serial.println("going AFTER undersample");
-
     classify(vector, category, letter);
-    Serial.println("END of classify");
 }
 
 void classify(byte vector[], unsigned int category, char letter)
@@ -237,9 +228,8 @@ void classify(byte vector[], unsigned int category, char letter)
     }
 }
 
-void readVectorFromIMU(byte vector[])
+void readVectorFromIMULearn(byte vector[])
 {
-    Serial.println("going into readVectorfromimu");
     byte accel[sensorBufSize];
     int raw[3];
 
@@ -272,9 +262,7 @@ void readVectorFromIMU(byte vector[])
             }
         }
     }
-    Serial.println("going BEFORE undersample");
     undersample(accel, samples, vector);
-    Serial.println("going AFTER undersample");
 }
 
 void trainLetter(char letter, unsigned int repeat)
@@ -286,7 +274,7 @@ void trainLetter(char letter, unsigned int repeat)
 
         if (i) Serial.println("And again...");
 
-        readVectorFromIMU(vector);
+        readVectorFromIMULearn(vector);
         CuriePME.learn(vector, vectorNumBytes, letter - upperStart);
 
         Serial.println("Got it!");
