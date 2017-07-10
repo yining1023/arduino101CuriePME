@@ -27,7 +27,6 @@ function setup() {
 function draw() {
   background(10);
   starBackground();
-  drawShape(letter);
   text(letter, width / 2, height / 2);
 }
 
