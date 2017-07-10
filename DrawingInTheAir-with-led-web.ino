@@ -68,7 +68,6 @@ char letter;
 void setup()
 {
     Serial.begin(9600);
-//    while(!Serial);
 
     pinMode(buttonPin, INPUT);
     pinMode(ledPin, OUTPUT);
@@ -91,6 +90,7 @@ void setup()
     CurieIMU.setAccelerometerRate(sampleRateHZ);
     CurieIMU.setAccelerometerRange(2);
 
+    while(!Serial);
     trainLetters();
     Serial.println("Training complete. Now, draw some letters (remember to ");
     Serial.println("hold the button) and see if the PME can classify them.");
@@ -220,6 +220,7 @@ void classify(byte vector[], unsigned int category, char letter)
 
     if (category == CuriePME.noMatch) {
         Serial.println("Don't recognise that one-- try again.");
+        CharacteristicPattern.setValue('0');
     } else {
         letter = category + upperStart;
         Serial.println("The letter is:");

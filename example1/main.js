@@ -8,73 +8,31 @@ var value = '64';
 var letter = 'Waiting...';
 var index = 0;
 
-function connect() {
-  let options = {
-    filters: [{
-      services: [serviceUuid],
-      name: name
-    }]}
-
-  console.log('Requesting Bluetooth Device...');
-
-  navigator.bluetooth.requestDevice(options)
-  .then(device => {
-    bluetoothDevice = device; // save a copy
-    console.log('Got device', device.name);
-    return device.gatt.connect();
-  })
-  .then(server => {
-      console.log('Getting Service...');
-      return server.getPrimaryService(serviceUuid);
-    })
-    .then(service => {
-      console.log('Getting Characteristics...');
-      // Get all characteristics.
-      return service.getCharacteristics();
-    })
-    .then(characteristics => {
-      console.log('Got Characteristics');
-      characteristicPattern = characteristics[0];
-      characteristicPattern.addEventListener('characteristicvaluechanged', handleData);
-
-    })
-    .catch(error => {
-      console.log('Argh! ' + error);
-    });
-  }
-
-function startNotify() {
-  characteristicPattern.startNotifications();
-}
-
-function handleData(event) {
-  value = event.target.value.getUint8(0);
-  console.log('> Got Pattern data: ' + value);
-  letter = String.fromCharCode(value);
-  console.log('> Converted data to letter: : ' + letter);
-}
+var stars = [];
 
 function setup() {
-  createCanvas(920, 600);
+  createCanvas(windowWidth, windowHeight);
   textSize(180);
   textAlign(CENTER);
   colorMode(HSB, 100);
+  noStroke();
+  fill(255);
+
+  for (var i = 0; i < 50; i++) {
+    var star = new Star();
+    stars.push(star);
+  }
 }
 
 function draw() {
-  if (letter === 'Waiting...') {
-    background(225);
-  } else {
-    var hue = map(parseInt(value), 65, 67, 0, 70);
-    background(hue, 100, 100);
-  }
-
+  background(10);
+  starBackground();
+  drawShape(letter);
   text(letter, width / 2, height / 2);
 }
 
-function disconnect() {
-  if (bluetoothDevice && bluetoothDevice.gatt) {
-    bluetoothDevice.gatt.disconnect();
-    console.log('Discoonected');
+function starBackground() {
+  for (var i = 0; i < 50; i++) {
+    stars[i].display();
   }
 }
