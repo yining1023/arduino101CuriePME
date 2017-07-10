@@ -9,7 +9,7 @@ var letter = 'Waiting...';
 var index;
 
 var backgroundColors = ['#1DFFAD', '#0FE8E2', '#2272FF'];
-var letterColors = ['#FF5797', '#EF5565', '#FB5524'];
+var letterColors = ['#FF5797', '#EF5565', '#F7B235'];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
