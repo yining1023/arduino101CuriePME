@@ -8,8 +8,6 @@ var value = '64';
 var letter = 'Waiting...';
 var index = 0;
 
-var stars = [];
-
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textSize(180);
@@ -17,21 +15,11 @@ function setup() {
   colorMode(HSB, 100);
   noStroke();
   fill(255);
-
-  for (var i = 0; i < 50; i++) {
-    var star = new Star();
-    stars.push(star);
-  }
 }
 
 function draw() {
   background(10);
-  starBackground();
+  drawDotsBackground();
   text(letter, width / 2, height / 2);
-}
-
-function starBackground() {
-  for (var i = 0; i < 50; i++) {
-    stars[i].display();
-  }
+  drawLetters(letter);
 }
