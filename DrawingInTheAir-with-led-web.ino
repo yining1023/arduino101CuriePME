@@ -36,7 +36,7 @@ const unsigned int trainingReps = 4;
 
 /* Increase this to 'A-Z' if you like-- it just takes a lot longer to train */
 const unsigned char trainingStart = 'A';
-const unsigned char trainingEnd = 'C';
+const unsigned char trainingEnd = 'B';
 
 /* The input pin used to signal when a letter is being drawn- you'll
  * need to make sure a button is attached to this pin */
@@ -92,9 +92,9 @@ void setup()
 
     while(!Serial);
     trainLetters();
-    Serial.println("Training complete. Now, draw some letters (remember to ");
+    Serial.println("Training complete. Now, make a gesture (remember to ");
     Serial.println("hold the button) and see if the PME can classify them.");
-    Serial.println("Use another ble device to connect to arduino101 first");
+    Serial.println("Use another ble device to connect to Arduino101 first");
 }
 
 void loop ()
@@ -287,12 +287,12 @@ void trainLetter(char letter, unsigned int repeat)
 void trainLetters()
 {
     for (char i = trainingStart; i <= trainingEnd; ++i) {
-        Serial.print("Hold down the button and draw the letter '");
+        Serial.print("Hold down the button and make a gesture or '");
         Serial.print(String(i) + "' in the air. Release the button as soon ");
         Serial.println("as you are done.");
 
         trainLetter(i, trainingReps);
-        Serial.println("OK, finished with this letter.");
+        Serial.println("OK, finished with this gesture.");
         delay(2000);
     }
 }

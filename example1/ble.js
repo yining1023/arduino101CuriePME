@@ -42,10 +42,10 @@ function handleData(event) {
   console.log('> Got Pattern data: ' + value);
   if (value !== 48) {
     letter = String.fromCharCode(value);
-    console.log('> Converted data to letter: : ' + letter);
+    console.log('Converted data to letter: : ' + letter);
   } else {
     letter = 'Waiting...';
-    console.log('> Could not recognize the gesture...');
+    console.log('Could not recognize the gesture...');
   }
 }
 

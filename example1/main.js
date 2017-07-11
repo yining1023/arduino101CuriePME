@@ -5,34 +5,42 @@ var bluetoothDevice;
 var characteristiPattern;
 
 var value;
-var letter = 'Waiting...';
+var letter = '';
 var index;
+var song;
+var texts = 'Waiting...';
 
-var backgroundColors = ['#1DFFAD', '#0FE8E2', '#2272FF'];
-var letterColors = ['#FF5797', '#EF5565', '#F7B235'];
+var backgroundColors = ['#1DFFAD', '#0FE8E2'];
+
+function preload() {
+  song = loadSound('./song.mov');
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   textSize(180);
   textAlign(CENTER);
   noStroke();
+  fill('#FF5797');
+  song.setVolume(0.5);
 }
 
 function draw() {
-  fill(0);
-  background(255);
-  if (letter !== 'Waiting...') changeColors();
-  text(letter, width / 2, height / 2);
+  if (letter !== '') {
+    changeColors();
+  }
+  text(texts, width / 2, height / 2);
 }
 
 function changeColors() {
   if (letter === 'A') {
     index = 0;
+    texts = 'play';
+    if (!song.isPlaying()) song.play();
   } else if (letter === 'B') {
     index = 1;
-  } else if (letter === 'C') {
-    index = 2;
+    texts = 'pause';
+    if (song.isPlaying()) song.pause();
   }
   background(backgroundColors[index]);
-  fill(letterColors[index]);
 }
